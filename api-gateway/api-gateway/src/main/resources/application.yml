@@ -1,0 +1,23 @@
+spring:
+  config:
+    import: "optional:configserver:http://localhost:9080"
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        # Route for Employee Service
+        - id: employee-service
+          uri: lb://employee-service  # Use load balancing via Eureka
+          predicates:
+            - Path=/employees/**  # Matches the /employees/** path
+          filters:
+            - StripPrefix=0
+
+        # Route for Department Service
+        - id: department-service
+          uri: lb://department-service  # Use load balancing via Eureka
+          predicates:
+            - Path=/departments/**  # Matches the /departments/** path
+          filters:
+            - StripPrefix=0
